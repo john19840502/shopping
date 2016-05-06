@@ -1,0 +1,27 @@
+<nav style="position: relative; align:centre;">
+  <strong>
+      <% if params[:filters] == 'brands/edward van vliet' %>
+        <a href="/" style="display: inline-block; text-align: center;" title="Ethnic Chic">
+          <%= image_tag "Edward-Ethnic-Chic-Logo01.png", width: 300 %>
+        </a>
+      <% else %>
+        <a href="/" style="display: inline-block; text-align: center;" title="Ethnic Chic">
+          <%= image_tag "Ethnic-Chic-Logo.png", width: 300 %>
+        </a>
+      <% end %>
+  </strong>
+<!-- <img src="../assets/images/Ethnic-Chic-White-Logo-02.png" width="25%" height="25%"></img>
+ -->  <ul>
+      <!--TODO: change links back-->
+      <%= spree_nav_link 'Home', root_path %>
+      <%= spree_nav_link 'Impressions', impressions_path %>
+      <%= spree_nav_link 'Online Shop', '/collection' %>
+      <li><a href="http://blog.ethnicchic.com", target="_blank">Blog</a></li>
+      <%= spree_nav_link 'About', '/about' %>
+      <%= spree_nav_link 'Contact', contact_us_path %>
+
+      </ul>  
+      <%= link_to "http://www.ethnicchic.com/edwardvanvliet", style: "position: absolute; right: 0;bottom: 5px;display:inline-block;" do %>
+        <%= image_tag("Edward-Ethnic-Chic-Button01.png",width: '120px') %>
+      <% end %>
+</nav>
