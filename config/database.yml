@@ -84,10 +84,13 @@ production:
   <<: *default
   database: ethnicchic2_production
   username: ethnicchic2
+  host: <%=ENV['POSTGRESQL_URL_INT'] %>
   password: <%= ENV['ETHNICCHIC2_DATABASE_PASSWORD'] %>
 
 staging:
   <<: *default
   database: ethnicchic2_staging
   username: ethnicchic2
+  host: <%=ENV['POSTGRESQL_URL_INT'] %>
   password: <%= ENV['ETHNICCHIC2_DATABASE_PASSWORD'] %>
+
