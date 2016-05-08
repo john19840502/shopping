@@ -74,8 +74,6 @@
 			var ch = $('.block_2_images').height();
 			$('.slider6').css({'height':ch +'px'});				
 		}
-	
-		set_slider_height();
 		setTimeout(set_slider_height, 100);
 		$(window).resize(function(){
 			set_slider_height();
