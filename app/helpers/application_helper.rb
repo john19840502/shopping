@@ -15,7 +15,7 @@ module ApplicationHelper
       image = product.images.where(search_result_asset: true).first
       image = product.images.first unless image
       options.reverse_merge! alt: image.alt.blank? ? product.name : image.alt.tr('"','').tr('\'','')
-      options.reverse_merge!({src: image.attachment.url(:large) })
+      options.reverse_merge!({src: image.attachment.url(:product) })
       img = '<img '
       options.keys.each do |k|
         img += "#{k}=#{options[k]} "
