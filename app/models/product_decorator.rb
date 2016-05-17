@@ -191,6 +191,7 @@ Spree::Product.class_eval do
     meta_description << "#{self.brand_name} online shop #{self.name}"
     taxons_names[taxons_names.index(taxons_names.last)] = "#{taxons_names.last} - worldwide shipping" if taxons_names.present?
     meta_description << taxons_names
+    meta_description << "Ethnicchic.com"
     self.meta_description = meta_description.flatten.join(", ")
     
     slug = []
