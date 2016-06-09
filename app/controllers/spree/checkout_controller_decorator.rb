@@ -8,7 +8,6 @@ Spree::CheckoutController.class_eval do
     return unless params[:state] == 'payment'
     pm_id = params[:order][:payments_attributes].first[:payment_method_id]
     payment_method = Spree::PaymentMethod.find(pm_id)
-    debugger
     if payment_method 
     	if payment_method.is_a?(Spree::PaymentMethod::Mollie)
 	      status_object = MolliePaymentService.new(payment_method: payment_method,
@@ -30,7 +29,6 @@ Spree::CheckoutController.class_eval do
   end
 
   def update
-    debugger
     if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
       @order.temporary_address = !params[:save_user_address]
       unless @order.next
