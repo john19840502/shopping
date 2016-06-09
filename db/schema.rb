@@ -34,7 +34,6 @@ ActiveRecord::Schema.define(version: 20160504075728) do
     t.integer  "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.boolean  "new_tab"
-    t.boolean  "sixth_slider",                        default: false
     t.boolean  "slider6",                             default: false
     t.boolean  "hove_over",                           default: false
   end

@@ -49,9 +49,7 @@
 						<% slider6_hoover_image = get_slider6_hoover_image %>
 						<div>
 							<a href="http://www.ethnicchic.com/edwardvanvliet" >
-										<img class="slider6" src="<%= slider6_image.attachment.url(:original) %>" 
-										onmouseover="this.src='<%= slider6_hoover_image.attachment.url(:original) %>';"
-										onmouseout="this.src='<%= slider6_image.attachment.url(:original) %>';"></img>
+										
 							</a>
 						</div>
 				  </div>

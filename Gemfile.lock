@@ -183,6 +183,14 @@ GIT
       multi_json
       spree_core (~> 3.0.0)
 
+GIT
+  remote: git://github.com/spree/spree_gateway.git
+  revision: 3cb02b0b3a45be5f4ace9d9295ffb3c11864e605
+  branch: 3-0-stable
+  specs:
+    spree_gateway (3.0.0)
+      spree_core (~> 3.0.0)
+
 PATH
   remote: spree-html-email
   specs:
@@ -643,6 +651,7 @@ DEPENDENCIES
   spree_dedicated_admin_option_types!
   spree_email_to_friend!
   spree_favorites!
+  spree_gateway!
   spree_html_email!
   spree_image_cropper!
   spree_impressions!
@@ -662,4 +671,4 @@ DEPENDENCIES
   xray-rails
 
 BUNDLED WITH
-   1.11.2
+   1.12.4
