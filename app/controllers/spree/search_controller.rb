@@ -39,8 +39,12 @@ module Spree
       @page = @searcher.properties[:page]
 
       if (params["filters"] != nil)
-        category_name = params["filters"].split('/')[1]
-        products = Spree::Product.algolia_search('', { facets: [{:facet=>"categories", :value=>"#{category_name}"}], facetFilters: ["taxons.categories:#{category_name}"], hitsPerPage: 7 })
+        filters = params["filters"].split('/')
+        taxons = []
+        (0..filters.length / 2 - 1).each do |i|
+          taxons << "taxons.#{filters[2*i].downcase}:#{filters[2*i+1].downcase}"
+        end
+        products = Spree::Product.algolia_search('', { facets: '*', facetFilters: taxons, hitsPerPage: 7 })
         @similar = products.select{ |prod| prod.images.first }
       end
     end

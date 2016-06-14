@@ -8,6 +8,7 @@
       <i class="glyphicon glyphicon-chevron-up"></i>
     </div>
     <%= render :partial => 'shared/footer' %>
+    <%= render :partial => 'shared/countries_modal' %>
     <%= render :partial => 'spree/shared/google_analytics' %>
   </div>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvn61Qq27-qO7r9QCFMSp_IFiALTonwdA&sensor=false"></script>

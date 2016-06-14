@@ -1,5 +1,9 @@
-<div class="well clearfix">
-  <%= image_tag 'credit_cards/credit_card.gif', :id => 'credit-card-image', :class => 'pull-right', :width => '170', :height => '28' %>
+<div class="well clearfix" id="stripe_method_form">
+  <div id="stripe_image" align="center">
+    <%= image_tag "frontend/visa_method.png", :size => "20x20" %>
+    <%= image_tag "frontend/mastercard_method.png", :size => "20x20" %>
+    <%= image_tag "frontend/discover_method.png", :size => "20x20" %>
+  </div>
   <% param_prefix = "payment_source[#{payment_method.id}]" %>
 
   <p class="field">
@@ -32,3 +36,9 @@
 
   <%= hidden_field_tag "#{param_prefix}[cc_type]", '', :id => "cc_type", :class => 'ccType' %>
 </div>
+
+<style>
+#stripe_image{
+
+}
+</style>

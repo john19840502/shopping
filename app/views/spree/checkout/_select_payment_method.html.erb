@@ -3,12 +3,16 @@
         <div class="col-sm-3"></div>
         <div class="col-sm-9">
             <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default">
-                    <input type="radio" id="q156" name="which_payment" value="1" /> Mollie
-                </label> 
-                <label class="btn btn-default">
-                    <input type="radio" id="q157" name="which_payment" value="2" /> Stripe
-                </label> 
+                <div class="radio-inline_mollie" style="position:relative;">
+                  <input name="which_payment" id="radio1" value="1" type="radio" checked="" style="float:left;margin:15px">
+                  <%= image_tag "frontend/paypal_method.png", :size => "50x50" %>
+                </div>
+                <div class="radio-inline_stripe">
+                  <input name="which_payment" id="radio2" value="2" type="radio" style="float:left;margin:15px"> 
+                  <%= image_tag "frontend/visa_method.png", :size => "50x50" %>
+                  <%= image_tag "frontend/mastercard_method.png", :size => "50x50" %>
+                  <%= image_tag "frontend/discover_method.png", :size => "50x50" %>
+               </div>
             </div>
         </div>
     </div>
@@ -19,3 +23,12 @@
   <%= link_to "<span class='glyphicon glyphicon-chevron-left'></span> Shopping Bag".html_safe, spree.cart_path, class: "button soft small button_back_to_cart" %>
   <%= submit_tag t(:save_and_continue), :class => 'continue button primary right' %>
 </div>
+
+<style>
+.radio-inline_mollie{
+
+}
+.radio-inline_stripe{
+  padding-top:10px;
+}
+</style>

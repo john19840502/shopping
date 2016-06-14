@@ -58,16 +58,63 @@
     <%= submit_tag "Confirm and start payment", :class => 'continue button primary right' %>
   </div>
 <% else %>
-  <%  @method = @order.available_payment_methods.select { |pm| pm.instance_of?(Spree::Gateway::StripeGateway) }.first %>
   <section>
-    <%= hidden_field_tag "order[payments_attributes][][payment_method_id]", @order.stripe_payment_method.id %>
-    <ul class="nav" id="payment-methods" data-hook>
-        <li id="payment_method_<%= @method.id %>" data-hook>
-          <fieldset>
-            <%= render :partial => "spree/checkout/payment/#{@method.method_type}", :locals => { :payment_method => @method } %>
-          </fieldset>
-        </li>
-    </ul>
+    <div class="panel panel-default" id="payment" data-hook>
+      <div class="panel-heading" style="display:none;">
+        <h3 class="panel-title"><%= Spree.t(:payment_information) %></h3>
+      </div>
+      <div class="panel-body" id="panel-body-big" data-hook="checkout_payment_step">
+        <% @payment_sources = nil %>
+        <% if @payment_sources.present? %>
+          <div class="card_options">
+            <%= radio_button_tag 'use_existing_card', 'no' %>
+            <label for="use_existing_card_yes">
+              <%= Spree.t(:use_existing_cc) %>
+            </label>
+            <br/>
+            <%= radio_button_tag 'use_existing_card', 'yes', true %>
+            <label for="use_existing_card_no">
+              <%= Spree.t(:use_new_cc_or_payment_method) %>
+            </label>
+          </div>
+
+          <div id="existing_cards">
+            <p class="form-group" data-hook="existing_cards">
+              <table class="existing-credit-card-list">
+                <tbody>
+                  <% @payment_sources.each do |card| %>
+                    <tr id="<%= dom_id(card,'spree')%>" class="<%= cycle('even', 'odd') %>">
+                      <td><%= card.name %></td>
+                      <td><%= card.display_number %></td>
+                      <td><%= card.month %> / <%= card.year %></td>
+                      <td>
+                        <%= radio_button_tag "order[existing_card]", card.id, (card == @payment_sources.first), { class: "existing-cc-radio" }  %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </p>
+          </div>
+        <% end %>
+
+        <%= hidden_field_tag "order[payments_attributes][][payment_method_id]", @order.stripe_payment_method.id %>
+
+        <div class="nav" id="payment-methods-stripe" data-hook>
+          <%  method = @order.available_payment_methods.select { |pm| pm.instance_of?(Spree::Gateway::StripeGateway) }.first %>
+          <li id="payment_method_<%= method.id %>" data-hook>
+              <fieldset>
+                <%= render :partial => "spree/checkout/payment/#{method.method_type}", :locals => { :payment_method => method } %>
+              </fieldset>
+            </li>
+        </div>
+
+        <p class='field' data-hook='coupon_code' style="display:none;">
+          <%= form.label :coupon_code %><br />
+          <%= form.text_field :coupon_code, :class => 'form-control' %>
+        </p>
+      </div>
+    </div>
   </section>
 
   <div class="buttons">
@@ -77,26 +124,92 @@
 <% end %>
 
 <style>
-#card_expiry{
-  position:absolute;
-  left:30px;
+#payment{
+  boder:none;
 }
-#card_expiry_id{
-  position:absolute;
-  left:30px;  
+#panel-body-big{
+  background:rgb(229,229,229);
+  border:none;
 }
-#card_code_id{
-  position:absolute;
-  left:45px;
-  top: 20px;
+#payment-methods-stripe{
+  background:rgb(229,229,229);  
+  border:none;
 }
-#card_code{
-  position:absolute;
-  left:95px;
-}
-#cvv_link{
-  position:absolute;
-  left:175px;
-  top:20px;
+#stripe_method_form{
+  background:rgb(229,229,229);  
+  border:none;  
 }
 </style>
+
+<script>
+  Spree.stripePaymentMethod = $('#payment_method_' + 4);
+
+  var mapCC, stripeResponseHandler;
+
+  mapCC = function(ccType) {
+    if (ccType === 'MasterCard') {
+      return 'mastercard';
+    } else if (ccType === 'Visa') {
+      return 'visa';
+    } else if (ccType === 'American Express') {
+      return 'amex';
+    } else if (ccType === 'Discover') {
+      return 'discover';
+    } else if (ccType === 'Diners Club') {
+      return 'dinersclub';
+    } else if (ccType === 'JCB') {
+      return 'jcb';
+    }
+  };
+
+  stripeResponseHandler = function(status, response) {
+    var paymentMethodId, token;
+    if (response.error) {
+      $('#stripeError').html(response.error.message);
+      var param_map = {
+        number:    '#card_number',
+        exp_month: '#card_expiry',
+        exp_year:  '#card_expiry',
+        cvc:       '#card_code'
+      }
+      if (response.error.param) {
+        errorField = Spree.stripePaymentMethod.find(param_map[response.error.param])
+        errorField.addClass('error');
+        errorField.parent().addClass('has-error');
+      }
+
+      return $('#stripeError').show();
+    } else {
+      Spree.stripePaymentMethod.find('#card_number, #card_expiry, #card_code').prop("disabled", true);
+      Spree.stripePaymentMethod.find(".ccType").prop("disabled", false);
+      Spree.stripePaymentMethod.find(".ccType").val(mapCC(response.card.brand));
+      token = response['id'];
+      paymentMethodId = Spree.stripePaymentMethod.prop('id').split("_")[2];
+      Spree.stripePaymentMethod.append("<input type='hidden' class='stripeToken' name='payment_source[" + paymentMethodId + "][gateway_payment_profile_id]' value='" + token + "'/>");
+      Spree.stripePaymentMethod.append("<input type='hidden' class='stripeToken' name='payment_source[" + paymentMethodId + "][last_digits]' value='" + response.card.last4 + "'/>");
+      Spree.stripePaymentMethod.append("<input type='hidden' class='stripeToken' name='payment_source[" + paymentMethodId + "][month]' value='" + response.card.exp_month + "'/>");
+      Spree.stripePaymentMethod.append("<input type='hidden' class='stripeToken' name='payment_source[" + paymentMethodId + "][year]' value='" + response.card.exp_year + "'/>");
+      return Spree.stripePaymentMethod.parents("form").trigger('submit');
+    }
+  };
+
+  $(document).ready(function() {
+    Spree.stripePaymentMethod.prepend("<div id='stripeError' class='errorExplanation alert alert-danger' style='display:none'></div>");
+    return $('#checkout_form_payment [data-hook=buttons]').click(function() {
+      var expiration, params;
+      $('#stripeError').hide();
+      Spree.stripePaymentMethod.find('#card_number, #card_expiry, #card_code').removeClass('error');
+      if (Spree.stripePaymentMethod.is(':visible')) {
+        expiration = $('.cardExpiry:visible').payment('cardExpiryVal');
+        params = $.extend({
+          number: $('.cardNumber:visible').val(),
+          cvc: $('.cardCode:visible').val(),
+          exp_month: expiration.month || 0,
+          exp_year: expiration.year || 0
+        }, Spree.stripeAdditionalInfo);
+        Stripe.card.createToken(params, stripeResponseHandler);
+        return false;
+      }
+    });
+  });
+</script>

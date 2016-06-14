@@ -1,4 +1,28 @@
 <nav style="position: relative; align:centre;">
+  <ul id="world_wide_shipping">
+    <div id="world_wide_shipping_text">
+      <h3>Worldwide Express Shipping</h3>
+    </div>
+    <div id="world_wide_option">
+      <li id="country_name" style="width:200px;">
+        <div>
+          <%
+            country_val = session[:country_name]
+            country_val ||= "Select your country"
+          %>
+          <a id="country_currency_selector" href="#" title="Select country" style="background:transparent;"><%= country_val %> <span class="ss-icon">dropdown</span></a>
+        </div>
+      </li>
+
+      <li id="currency_dropdown" style="width:100px">
+        <a href="#" style="background:transparent; width:100px;" title="Currency selection"><small><%=session[:currency] || "EUR"%></small><span class="ss-icon">dropdown</span></a>
+        <ul style="display:none">
+          <li><a href="/country/set_currency?currency=EUR" style="background:transparent; width:100px;">EUR</a></li>
+          <li><a href="/country/set_currency?currency=USD" style="background:transparent; width:100px;">USD</a></li>
+        </ul>
+      </li>
+    </div>
+  </ul>
   <strong>
       <% if params[:filters] == 'brands/edward van vliet' %>
         <a href="/" style="display: inline-block; text-align: center;" title="Ethnic Chic">
@@ -11,17 +35,63 @@
       <% end %>
   </strong>
 <!-- <img src="../assets/images/Ethnic-Chic-White-Logo-02.png" width="25%" height="25%"></img>
- -->  <ul>
-      <!--TODO: change links back-->
-      <%= spree_nav_link 'Home', '/' %>
-      <%= spree_nav_link 'Impressions', '/impressions' %>
-      <%= spree_nav_link 'Online Shop', '/collection' %>
-      <li><a href="http://blog.ethnicchic.com", target="_blank">Blog</a></li>
-      <%= spree_nav_link 'About', '/about' %>
-      <%= spree_nav_link 'Contact', '/contact-us' %>
-
-      </ul>  
+ -->  
+  <ul>
+  <!--TODO: change links back-->
+    <%= spree_nav_link 'Home', '/' %>
+    <%= spree_nav_link 'Impressions', '/impressions' %>
+    <%= spree_nav_link 'Online Shop', '/collection' %>
+    <li><a href="http://blog.ethnicchic.com", target="_blank">Blog</a></li>
+    <%= spree_nav_link 'About', '/about' %>
+    <%= spree_nav_link 'Contact', '/contact-us' %>
+  </ul>  
       <%= link_to "http://www.ethnicchic.com/edwardvanvliet", style: "position: absolute; right: 0;bottom: 5px;display:inline-block;" do %>
         <%= image_tag("Edward-Ethnic-Chic-Button01.png",width: '170px') %>
       <% end %>
 </nav>
+
+<style>
+
+#world_wide_shipping_text{
+  display:inline-block;
+  position:absolute;
+  left:0px;
+}
+
+#country_name{
+  float:right;
+}
+
+#currency_dropdown{
+  float:right;
+}
+
+#world_wide_option{
+  display:inline-block;
+  position:absolute;
+  right:0px;  
+}
+
+li#country_name{
+  background-color:transparent;
+}
+
+li#currency_dropdown{
+  background-color:transparent;
+}
+
+ul#world_wide_shipping{
+  background-color:grey;
+  color:grey;
+}
+
+#currency_select{
+  backgroud:transparent;
+}
+#currency_eur{
+  backgroud:transparent;
+}
+#currency_usd{
+  backgroud:transparent;
+}
+</style>
