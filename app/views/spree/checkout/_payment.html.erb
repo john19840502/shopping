@@ -147,6 +147,7 @@
   var mapCC, stripeResponseHandler;
 
   mapCC = function(ccType) {
+    alert("mapCC");
     if (ccType === 'MasterCard') {
       return 'mastercard';
     } else if (ccType === 'Visa') {
@@ -163,6 +164,7 @@
   };
 
   stripeResponseHandler = function(status, response) {
+    alert("stripeResponseHandler")
     var paymentMethodId, token;
     if (response.error) {
       $('#stripeError').html(response.error.message);
