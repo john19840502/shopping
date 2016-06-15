@@ -1,36 +1,34 @@
 <nav style="position: relative; align:centre;">
-  <ul id="world_wide_shipping">
-    <div id="world_wide_shipping_text">
-      <h3>Worldwide Express Shipping</h3>
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background:rgb(123,123,123); margin-bottom:10px;">
+    <div id="world_wide_shipping_text" style="margin-top: 15px;">
+        <h3>Worldwide Express Shipping</h3>
     </div>
-    <div id="world_wide_option">
-      <li id="country_name" style="width:200px;">
-        <div>
-          <%
-            country_val = session[:country_name]
-            country_val ||= "Select your country"
-          %>
-          <a id="country_currency_selector" href="#" title="Select country" style="background:transparent;"><%= country_val %> <span class="ss-icon">dropdown</span></a>
-        </div>
-      </li>
-
-      <li id="currency_dropdown" style="width:100px">
-        <a href="#" style="background:transparent; width:100px;" title="Currency selection"><small><%=session[:currency] || "EUR"%></small><span class="ss-icon">dropdown</span></a>
-        <ul style="display:none">
-          <li><a href="/country/set_currency?currency=EUR" style="background:transparent; width:100px;">EUR</a></li>
-          <li><a href="/country/set_currency?currency=USD" style="background:transparent; width:100px;">USD</a></li>
+    <ul class="nav navbar-nav navbar-right">
+      <li id="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="background:transparent;" aria-expanded="false" title="Currency selection"><small><%=session[:currency] || "EUR"%></small><span class="ss-icon">dropdown</span></a>
+        <ul class="dropdown-menu" style="background:transparent;">
+          <li id="eur_currency"><a href="/country/set_currency?currency=EUR">EUR</a></li>
+          <li id="usd_currency"><a href="/country/set_currency?currency=USD">USD</a></li>
         </ul>
       </li>
-    </div>
-  </ul>
-  <strong>
+      <li>
+        <%
+        country_val = session[:country_name]
+        country_val ||= "Select your country"
+        %>
+        <a id="country_currency_selector" style="background:transparent;"href="#" title="Select country"><%= country_val %> <span class="ss-icon">dropdown</span></a>
+      </li>
+    </ul>
+  </div>
+  
+  <strong align=center>
       <% if params[:filters] == 'brands/edward van vliet' %>
-        <a href="/" style="display: inline-block; text-align: center;" title="Ethnic Chic">
+        <a href="/" class="ethnic_logo_image" style="display: inline-block; text-align: center;" title="Ethnic Chic">
           <%= image_tag "Edward-Ethnic-Chic-Logo01.png", width: 300 %>
         </a>
       <% else %>
-        <a href="/" style="display: inline-block; text-align: center;" title="Ethnic Chic">
-          <%= image_tag "Ethnic-Chic-Logo.png", width: 300 %>
+        <a href="/" class="ethnic_logo_image" style="display: inline-block; text-align: center;" title="Ethnic Chic">
+            <%= image_tag "Ethnic-Chic-Logo.png", width: 300 %>
         </a>
       <% end %>
   </strong>
@@ -51,38 +49,30 @@
 </nav>
 
 <style>
-
-#world_wide_shipping_text{
-  display:inline-block;
-  position:absolute;
-  left:0px;
+#eur_currency{
+  float:left;
+  margin-left:10px;
 }
-
+#usd_currency{
+  float:right;
+  margin-right:10px;
+}
+#world_wide_shipping_text{
+  float:left;
+  magin-top:10px;
+}
 #country_name{
   float:right;
+  background-color:transparent;
 }
 
 #currency_dropdown{
   float:right;
-}
-
-#world_wide_option{
-  display:inline-block;
-  position:absolute;
-  right:0px;  
-}
-
-li#country_name{
-  background-color:transparent;
-}
-
-li#currency_dropdown{
   background-color:transparent;
 }
 
 ul#world_wide_shipping{
-  background-color:grey;
-  color:grey;
+  background-color:lightgrey;
 }
 
 #currency_select{
@@ -93,5 +83,9 @@ ul#world_wide_shipping{
 }
 #currency_usd{
   backgroud:transparent;
+}
+
+.container.large{
+  padding:0;
 }
 </style>
