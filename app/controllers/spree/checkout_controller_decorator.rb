@@ -29,6 +29,7 @@ Spree::CheckoutController.class_eval do
   end
 
   def update
+    debugger
     if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
       @order.temporary_address = !params[:save_user_address]
       unless @order.next
